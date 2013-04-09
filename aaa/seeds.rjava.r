@@ -4,10 +4,13 @@ require(XLConnect)
 fil0 <- "F:/GitHub/ceshiR/aaa"
 setwd(fil0)
 dd <- dir(fil0,'xls') ; dd
-demoEF0 <- paste(fil0, dd[4],sep='/')
+demoEF0 <- paste(fil0, dd[2],sep='/'); demoEF0
 wb <- loadWorkbook(demoEF0); wb
-readNamedRegion(wb,name="mm")
-data <- readNamedRegion(wb, name = "aa")
+
+readWorksheetFromFile(loadWorkbook(demoEF0)#file= "F:/GitHub/ceshiR/aaa/aaa.xls"
+                      , sheet=1, header=TRUE)
+
+
 data
 Sheet1
 ## Example 1:
