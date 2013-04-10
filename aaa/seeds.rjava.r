@@ -1,47 +1,34 @@
-Sys.setenv(JAVA_HOME="C:\\Program Files\\Java\\jdk1.7.0_12")
+#############################################################################
+#   read seedings data in the excel books with xlsx.   wb 2013-4-10 9:03:02   
+#############################################################################
+find.java <- function() {
+  for (root in c("HLM", "HCU")) 
+    for (key in c("Software\\JavaSoft\\Java Runtime Environment"
+                  , "Software\\JavaSoft\\Java Development Kit")) {
+      hive <- try(utils::readRegistry(key, root, 2), 
+                  silent = TRUE)
+      if (!inherits(hive, "try-error")) 
+        return(hive)                                             }
+   hive                 }
+# find.java()
+####################################
+Sys.setenv(JAVA_HOME="C:\\Program Files\\Java\\jre7")
 require(rJava)
 require(XLConnect)
-fil0 <- "F:/GitHub/ceshiR/aaa"
-setwd(fil0)
-dd <- dir(fil0,'xls') ; dd
-demoEF0 <- paste(fil0, dd[2],sep='/'); demoEF0
-wb <- loadWorkbook(demoEF0); wb
-
-readWorksheetFromFile(loadWorkbook(demoEF0)#file= "F:/GitHub/ceshiR/aaa/aaa.xls"
-                      , sheet=1, header=TRUE)
-
-
-data
-Sheet1
-## Example 1:
-# mtcars xlsx file from demoFiles subfolder of package XLConnect
-demoExcelFile <- system.file("demoFiles/mtcars.xlsx", package = "XLConnect")
-# Load workbook
-wb <- loadWorkbook(demoExcelFile)
- # Read named region 'mtcars' (with default header = TRUE)
-data <- readNamedRegion(wb, name = "mtcars")
-
- 
-
-# multiregion xlsx file from demoFiles subfolder of package XLConnect
-demoExcelFile <- system.file("demoFiles/multiregion.xlsx", 
-                             package = "XLConnect")
-
-# Load a single named region into a single data.frame.
-df <- readNamedRegionFromFile(demoExcelFile, name="Iris")
-
-# Load multiple regions at once - returns a (named) list 
-# of data.frames.
-df <- readNamedRegionFromFile(demoExcelFile, 
-                              name=c("Calendar", "Iris", "IQ"))
-
-
-
-
-
-
-
-
-
-
-
+#
+fildat <- "F:\\DataW\\seeds\\dataseed"
+setwd(fildat)
+di0 <- dir(fildat)[2]; di0
+df.one <- cbind(readWorksheetFromFile(di0,sheet=2), time=substr(di0,1,10))
+#
+SSA <- lapply(dir(fildat),function(X)
+                 cbind(readWorksheetFromFile(X,sheet=2),time=substr(X,1,10))
+              )
+SSA00 <- do.call(rbind,SSA) 
+#
+writeWorksheetToFile("Seeds-data-result.xlsx"
+                    , data = list(i1 = SSA00, i2 = 1:10, i3 = 9:1)
+                    , sheet = c("FirstSheet", "SecondSheet", "ThirdSheet")
+                    , startRow = c(1,10,5), startCol = c(1,11,5)
+                    )
+#######################################################################################
